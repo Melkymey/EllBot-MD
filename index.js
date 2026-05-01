@@ -1,5 +1,4 @@
-import { execSync } from "child_process"
-import fs from "fs"
+const { execSync } = require("child_process")
 
 // 🔥 LIST MODULE
 const modules = [
@@ -12,10 +11,10 @@ const modules = [
   "yt-search"
 ]
 
-// 🔥 AUTO INSTALL (opsional, tapi aman)
+// 🔥 AUTO INSTALL
 function installModule(mod) {
   try {
-    await import(mod)
+    require.resolve(mod)
     console.log(`✅ ${mod} sudah ada`)
   } catch {
     console.log(`📦 Installing ${mod}...`)
@@ -25,17 +24,9 @@ function installModule(mod) {
 
 console.log("🚀 Checking modules...\n")
 
-for (const mod of modules) {
-  try {
-    await import(mod)
-    console.log(`✅ ${mod} sudah ada`)
-  } catch {
-    console.log(`📦 Installing ${mod}...`)
-    execSync(`npm install ${mod}`, { stdio: "inherit" })
-  }
-}
+modules.forEach(installModule)
 
 console.log("\n✅ Semua module siap!\n")
 
 // 🔥 JALANKAN BOT
-import "./main.js"
+require("./main")
